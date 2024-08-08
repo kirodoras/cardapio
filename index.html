@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Cardápio Digital</title>
+	<style>
+		body {
+			font-family: Arial, sans-serif;
+			margin: 0;
+			padding: 0;
+			box-sizing: border-box;
+		}
+
+		header {
+			background-color: #cf2b2b;
+			color: #fff;
+			padding: 1.25rem;
+			text-align: center;
+		}
+
+		main {
+			padding: 1.25rem;
+		}
+
+		.section {
+			margin-bottom: 1.25rem;
+		}
+
+		.card {
+			display: flex;
+			align-items: center;
+			padding: 0.625rem;
+			border: 0.0625rem solid #ddd;
+			margin-bottom: 0.625rem;
+			border-radius: 0.5rem;
+			background-color: #fff;
+		}
+
+		.card-head {
+			display: flex;
+			align-items: center;
+		}
+
+		.card-head img {
+			width: 3.75rem;
+			height: 3.75rem;
+			margin-right: 0.625rem;
+		}
+
+		.card label {
+			display: flex;
+			flex-direction: column;
+			width: 100%;
+			cursor: pointer;
+		}
+
+		.card span {
+			font-weight: bold;
+		}
+
+		input.quantity {
+			width: 3.75rem;
+			margin-top: 0.3125rem;
+		}
+
+		footer {
+			text-align: center;
+			padding: 0.625rem;
+			margin-bottom: 2.375rem;
+		}
+
+		button {
+			background-color: #cf2b2b;
+			color: #fff;
+			border: none;
+			padding: 0.625rem 1.25rem;
+			border-radius: 0.3125rem;
+			cursor: pointer;
+		}
+
+		button:hover {
+			background-color: #a70000;
+		}
+
+		.modal,
+		.payment-modal {
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			background-color: rgba(0, 0, 0, 0.5);
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			z-index: 1000;
+		}
+
+		.modal-content {
+			background-color: #fff;
+			padding: 1.25rem;
+			border-radius: 0.5rem;
+			width: 80%;
+			max-width: 31.25rem;
+		}
+
+		.modal-footer {
+			display: flex;
+			justify-content: space-between;
+			margin-top: 1.25rem;
+		}
+
+		.hidden {
+			display: none;
+		}
+
+		input[type="number"] {
+			width: 3.75rem;
+		}
+
+		#order-summary {
+			margin-top: 1.25rem;
+		}
+
+		#order-summary ul {
+			list-style: none;
+			padding: 0;
+		}
+
+		.payment-content {
+			background: #fff;
+			padding: 1.25rem;
+			border-radius: 0.5rem;
+			width: 90%;
+			max-width: 31.25rem;
+			box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
+			position: relative;
+		}
+
+		.payment-content h3 {
+			margin-top: 0;
+			font-size: 1.5rem;
+			color: #333;
+		}
+
+		.payment-content form {
+			display: flex;
+			flex-direction: column;
+		}
+
+		.payment-content label {
+			margin-bottom: 0.3125rem;
+			font-weight: bold;
+			color: #555;
+		}
+
+		.payment-content input,
+		.payment-content select {
+			margin-bottom: 0.9375rem;
+			padding: 0.625rem;
+			border: 0.0625rem solid #ddd;
+			border-radius: 0.25rem;
+			font-size: 16px;
+		}
+
+		.payment-content button {
+			background-color: #cf2b2b;
+			color: white;
+			border: none;
+			padding: 0.625rem;
+			border-radius: 0.25rem;
+			cursor: pointer;
+			font-size: 16px;
+			margin: 0.3125rem 0;
+		}
+
+		.payment-content button:hover {
+			background-color: #a70000;
+		}
+
+		.payment-content #order-summary {
+			margin-bottom: 0.9375rem;
+		}
+
+		.payment-modal.hidden {
+			display: none;
+		}
+	</style>
+</head>
+
+<body>
+	<div class="content">
+		<header>
+			<h1>Cardápio Digital</h1>
+			<h2>Faça seu pedido</h2>
+		</header>
+		<main>
+			<h3>Escolha seus itens</h3>
+			<div class="section">
+				<h4>Hambúrgueres</h4>
+				<div class="card" data-category="hamburguer">
+					<input type="checkbox" id="hamburguer1" data-name="Hambúrguer Clássico" data-price="14.90">
+					<label for="hamburguer1">
+						<div class="card-head">
+							<img src="assets/hamburguer1.jpeg" alt="Hambúrguer da casa">
+							<h4>Hambúrguer da casa</h4>
+						</div>
+						<p>Delicioso hambúrguer com carne suculenta.</p>
+						<span>R$ 14,90</span>
+						<label for="quantity-hamburguer1">Quantidade:</label>
+						<input type="number" id="quantity-hamburguer1" class="quantity" min="1" value="1">
+					</label>
+				</div>
+				<div class="card" data-category="hamburguer">
+					<input type="checkbox" id="hamburguer2" data-name="Cheeseburger" data-price="16.90">
+					<label for="hamburguer2">
+						<div class="card-head">
+							<img src="assets/hamburguer2.jpeg" alt="Super burger">
+							<h4>Super burger</h4>
+						</div>
+						<p>Hambúrguer com queijo derretido e bacon.</p>
+						<span>R$ 16,90</span>
+						<label for="quantity-hamburguer2">Quantidade:</label>
+						<input type="number" id="quantity-hamburguer2" class="quantity" min="1" value="1">
+					</label>
+				</div>
+			</div>
+			<div class="section">
+				<h4>Bebidas</h4>
+				<div class="card" data-category="bebida">
+					<input type="checkbox" id="bebida1" data-name="Refrigerante" data-price="4.90">
+					<label for="bebida1">
+						<div class="card-head">
+							<img src="assets/bebida1.jpeg" alt="Refrigerante">
+							<h4>Refrigerante</h4>
+						</div>
+						<p>Refrigerante gelado.</p>
+						<span>R$ 4,90</span>
+						<label for="quantity-bebida1">Quantidade:</label>
+						<input type="number" id="quantity-bebida1" class="quantity" min="1" value="1">
+					</label>
+				</div>
+				<div class="card" data-category="bebida">
+					<input type="checkbox" id="bebida2" data-name="Suco de Laranja" data-price="6.90">
+					<label for="bebida2">
+						<div class="card-head">
+							<img src="assets/bebida2.jpeg" alt="Suco de Laranja">
+							<h4>Suco de Laranja</h4>
+						</div>
+						<p>Suco natural de laranja.</p>
+						<span>R$ 6,90</span>
+						<label for="quantity-bebida2">Quantidade:</label>
+						<input type="number" id="quantity-bebida2" class="quantity" min="1" value="1">
+					</label>
+				</div>
+			</div>
+			<div class="section">
+				<h4>Sobremesas</h4>
+				<div class="card" data-category="sobremesa">
+					<input type="checkbox" id="sobremesa1" data-name="Pudim" data-price="7.90">
+					<label for="sobremesa1">
+						<div class="card-head">
+							<img src="assets/sobremesa1.jpeg" alt="Pudim">
+							<h4>Pudim</h4>
+						</div>
+						<p>Sobremesa clássica e deliciosa.</p>
+						<span>R$ 7,90</span>
+						<label for="quantity-sobremesa1">Quantidade:</label>
+						<input type="number" id="quantity-sobremesa1" class="quantity" min="1" value="1">
+					</label>
+				</div>
+				<div class="card" data-category="sobremesa">
+					<input type="checkbox" id="sobremesa2" data-name="Petit Gateau" data-price="19.90">
+					<label for="sobremesa2">
+						<div class="card-head">
+							<img src="assets/sobremesa2.jpeg" alt="Petit Gateau">
+							<h4>Petit Gateau</h4>
+						</div>
+						<p>Petit Gateau com sorvete.</p>
+						<span>R$ 19,90</span>
+						<label for="quantity-sobremesa2">Quantidade:</label>
+						<input type="number" id="quantity-sobremesa2" class="quantity" min="1" value="1">
+					</label>
+				</div>
+			</div>
+		</main>
+		<footer>
+			<button type="button" onclick="openCart()">Ver Carrinho</button>
+		</footer>
+
+		<div class="modal hidden">
+			<div class="modal-content">
+				<h3>Carrinho de Compras</h3>
+				<div id="cart-items"></div>
+				<div class="modal-footer">
+					<button type="button" onclick="openPayment()">Finalizar Pedido</button>
+					<button type="button" onclick="closeModal()">Cancelar</button>
+				</div>
+			</div>
+		</div>
+
+		<div class="payment-modal hidden">
+			<div class="payment-content">
+				<h3>Finalização do Pedido</h3>
+				<form id="order-form">
+					<label for="payment-method">Método de Pagamento:</label>
+					<select id="payment-method" name="payment-method">
+						<option value="credit-card">Cartão de Crédito/Débito</option>
+						<option value="pix">Pix</option>
+					</select>
+					<label for="name">Nome Completo:</label>
+					<input type="text" id="name" name="name" required>
+					<label for="address">Endereço:</label>
+					<input type="text" id="address" name="address" required>
+					<div id="order-summary"></div>
+					<button type="button" onclick="confirmOrder()">Confirmar Pedido</button>
+					<button type="button" onclick="cancelOrder()">Cancelar</button>
+				</form>
+			</div>
+		</div>
+	</div>
+	<script>
+		function openCart() {
+			const cartItemsContainer = document.getElementById('cart-items');
+			let total = 0;
+			let cartItems = '';
+
+			document.querySelectorAll('.card input[type="checkbox"]:checked').forEach((checkbox) => {
+				const name = checkbox.getAttribute('data-name');
+				const price = parseFloat(checkbox.getAttribute('data-price'));
+				const quantity = parseInt(document.querySelector(`#quantity-${checkbox.id}`).value);
+
+				const itemTotal = price * quantity;
+				total += itemTotal;
+				cartItems += `<div>${name} - ${quantity} x R$ ${price.toFixed(2)} = R$ ${itemTotal.toFixed(2)}</div>`;
+			});
+
+			cartItems += `<hr><div>Total: R$ ${total.toFixed(2)}</div>`;
+			cartItemsContainer.innerHTML = cartItems;
+			document.querySelector(".modal").classList.remove("hidden");
+		}
+
+		function closeModal() {
+			document.querySelector(".modal").classList.add("hidden");
+		}
+
+		function openPayment() {
+			const orderSummary = document.getElementById('order-summary');
+			let summary = '<h4>Resumo do Pedido:</h4><ul>';
+
+			document.querySelectorAll('.card input[type="checkbox"]:checked').forEach((checkbox) => {
+				const name = checkbox.getAttribute('data-name');
+				const price = checkbox.getAttribute('data-price');
+				const quantity = document.querySelector(`#quantity-${checkbox.id}`).value;
+
+				summary += `<li>${name} - ${quantity} x R$ ${price} = R$ ${(price * quantity).toFixed(2)}</li>`;
+			});
+
+			summary += '</ul>';
+			document.getElementById('order-summary').innerHTML = summary;
+			document.querySelector(".payment-modal").classList.remove("hidden");
+		}
+
+		function confirmOrder() {
+			const name = document.getElementById('name').value;
+			const address = document.getElementById('address').value;
+			const paymentMethod = document.getElementById('payment-method').value;
+
+			if (!name || !address) {
+				alert('Por favor, preencha todos os campos obrigatórios.');
+				return;
+			}
+
+			const items = [];
+			document.querySelectorAll('.card input[type="checkbox"]:checked').forEach((checkbox) => {
+				const name = checkbox.getAttribute('data-name');
+				const price = parseFloat(checkbox.getAttribute('data-price'));
+				const quantity = parseInt(document.querySelector(`#quantity-${checkbox.id}`).value);
+				const itemTotal = price * quantity;
+
+				items.push({
+					name,
+					quantity,
+					price,
+					total: itemTotal
+				});
+			});
+
+			const order = {
+				name,
+				address,
+				paymentMethod,
+				items,
+				total: items.reduce((sum, item) => sum + item.total, 0)
+			};
+			console.log('Pedido Confirmado:', order);
+			alert('Seu pedido foi confirmado com sucesso!');
+			closeModal();
+			closePaymentModal();
+			document.getElementById('order-form').reset();
+		}
+
+		function cancelOrder() {
+			document.getElementById('order-form').reset();
+			closePaymentModal();
+			alert('O pedido foi cancelado.');
+		}
+
+		function closePaymentModal() {
+			document.querySelector(".payment-modal").classList.add("hidden");
+		}
+	</script>
+</body>
+
+</html>
